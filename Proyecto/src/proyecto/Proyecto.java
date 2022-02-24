@@ -67,7 +67,6 @@ public class Proyecto extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 400, 690));
         setMinimumSize(new java.awt.Dimension(1000, 600));
-        setPreferredSize(new java.awt.Dimension(800, 534));
 
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(47, 800));
 
@@ -81,7 +80,7 @@ public class Proyecto extends javax.swing.JFrame {
 
         mainScrollPane.setViewportView(codePane);
 
-        codeTabsPanel.addTab("Nuevo Archivo", mainScrollPane);
+        codeTabsPanel.addTab("Nuevo Archivo*", mainScrollPane);
 
         jTextPane4.setEditable(false);
         jScrollPane1.setViewportView(jTextPane4);
@@ -195,28 +194,31 @@ public class Proyecto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileBtnActionPerformed
-        //this.codeTabsPanel.add(new javax.swing.JScrollPane());
-        //scroll
-        //text
+
+        this.newFile("Nuevo Archivo*", "");        
+        
+    }//GEN-LAST:event_newFileBtnActionPerformed
+
+    public void newFile(String name, String text) {
         javax.swing.JScrollPane newScrollPane = new javax.swing.JScrollPane();
         newScrollPane.setAutoscrolls(true);
         newScrollPane.setBounds(this.mainScrollPane.getBounds());
         
         javax.swing.JTextPane newPane = new javax.swing.JTextPane();
         newPane.setBounds(this.mainScrollPane.getBounds());
+        newPane.setText(text);
         
         newScrollPane.setViewportView(newPane);
         
-        codeTabsPanel.addTab("New File*", newScrollPane);
+        codeTabsPanel.addTab(name, newScrollPane);
         
-        //newScrollPane.add(newPane);
-        //this.codeTabsPanel.add("New File*", newScrollPane);
+        //System.out.println(this.codeTabsPanel.getTabCount()-1);
+        //this.codeTabsPanel.getTabComponentAt(this.codeTabsPanel.getTabCount()-1).requestFocus();
+        //System.out.println(this.codeTabsPanel.getSelectedIndex());
+        this.codeTabsPanel.setSelectedIndex(this.codeTabsPanel.getTabCount()-1);
         
-        //newScrollPane.requestFocus();aqui
-        
-        
-    }//GEN-LAST:event_newFileBtnActionPerformed
-
+    }
+    
     private void openFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileBtnActionPerformed
         // TODO add your handling code here:
         Scanner entrada = null;
@@ -229,13 +231,16 @@ public class Proyecto extends javax.swing.JFrame {
             entrada = new Scanner(f);
             String texto = "";
             String nombre = f.getName();
-            this.setTitle(nombre);
             
             while (entrada.hasNext()) {
                 texto+=entrada.nextLine()+'\n';
-                //System.out.println(entrada.nextLine());
             }
-            this.codePane.setText(texto);
+            
+            this.newFile(nombre, texto);
+            
+            System.out.println(texto);
+            
+            
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (NullPointerException e) {
