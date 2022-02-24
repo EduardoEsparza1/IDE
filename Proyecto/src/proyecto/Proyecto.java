@@ -228,6 +228,9 @@ public class Proyecto extends javax.swing.JFrame {
             File f = new File(ruta);
             entrada = new Scanner(f);
             String texto = "";
+            String nombre = f.getName();
+            this.setTitle(nombre);
+            
             while (entrada.hasNext()) {
                 texto+=entrada.nextLine()+'\n';
                 //System.out.println(entrada.nextLine());
