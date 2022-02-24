@@ -6,8 +6,11 @@ package proyecto;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -126,6 +129,11 @@ public class Proyecto extends javax.swing.JFrame {
         jMenu1.add(saveFileBtn);
 
         saveAsBtn.setText("Guardar Como...");
+        saveAsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsBtnActionPerformed(evt);
+            }
+        });
         jMenu1.add(saveAsBtn);
 
         closeFileBtn.setText("Cerrar");
@@ -209,8 +217,9 @@ public class Proyecto extends javax.swing.JFrame {
         Scanner entrada = null;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(fileChooser);
+        
         try {
-            String ruta = fileChooser.getSelectedFile().getAbsolutePath();                                        
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
             File f = new File(ruta);
             entrada = new Scanner(f);
             String texto = "";
@@ -232,9 +241,40 @@ public class Proyecto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_openFileBtnActionPerformed
 
+    private void saveAsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsBtnActionPerformed
+        // Guardar Como
+
+        JFileChooser guardar = new JFileChooser();
+        guardar.showSaveDialog(null);
+        guardar.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        File archivo = guardar.getSelectedFile();
+        
+
+        guardarFichero(this.codePane.getText(), archivo);
+
+    }//GEN-LAST:event_saveAsBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
+    
+    public void guardarFichero(String cadena, File archivo){
+
+    FileWriter escribir;
+    try {
+
+        escribir = new FileWriter(archivo, true);
+        escribir.write(cadena);
+        escribir.close();
+
+    } catch (FileNotFoundException ex) {
+        JOptionPane.showMessageDialog(null, "Error al guardar, ponga nombre al archivo");
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(null, "Error al guardar, en la salida");
+    }
+}
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
