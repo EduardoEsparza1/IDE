@@ -4,6 +4,11 @@
  */
 package proyecto;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author eduar
@@ -31,9 +36,9 @@ public class Proyecto extends javax.swing.JFrame {
         jTextPane2 = new javax.swing.JTextPane();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTextPane7 = new javax.swing.JTextPane();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        codeTabsPanel = new javax.swing.JTabbedPane();
+        mainScrollPane = new javax.swing.JScrollPane();
+        codePane = new javax.swing.JTextPane();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane4 = new javax.swing.JTextPane();
@@ -45,16 +50,21 @@ public class Proyecto extends javax.swing.JFrame {
         jTextPane6 = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        newFileBtn = new javax.swing.JMenuItem();
+        openFileBtn = new javax.swing.JMenuItem();
+        saveFileBtn = new javax.swing.JMenuItem();
+        saveAsBtn = new javax.swing.JMenuItem();
+        closeFileBtn = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBounds(new java.awt.Rectangle(0, 0, 1360, 690));
+        setBounds(new java.awt.Rectangle(0, 0, 400, 690));
         setMinimumSize(new java.awt.Dimension(1000, 600));
+        setPreferredSize(new java.awt.Dimension(800, 534));
 
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(47, 800));
 
@@ -66,9 +76,9 @@ public class Proyecto extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Errores", jScrollPane7);
 
-        jScrollPane4.setViewportView(jTextPane1);
+        mainScrollPane.setViewportView(codePane);
 
-        jTabbedPane2.addTab("Nuevo Archivo", jScrollPane4);
+        codeTabsPanel.addTab("Nuevo Archivo", mainScrollPane);
 
         jTextPane4.setEditable(false);
         jScrollPane1.setViewportView(jTextPane4);
@@ -92,34 +102,53 @@ public class Proyecto extends javax.swing.JFrame {
 
         jMenu1.setText("Archivo");
 
-        jMenuItem1.setText("Nuevo");
-        jMenuItem1.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/iconos/pressed/icons8_code_file_48px_p.png"))); // NOI18N
-        jMenuItem1.setSelected(true);
-        jMenuItem1.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/iconos/On Layer/icons8_code_file_48px_on.png"))); // NOI18N
-        jMenuItem1.setVerifyInputWhenFocusTarget(false);
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        newFileBtn.setText("Nuevo");
+        newFileBtn.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/iconos/pressed/icons8_code_file_48px_p.png"))); // NOI18N
+        newFileBtn.setSelected(true);
+        newFileBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/iconos/On Layer/icons8_code_file_48px_on.png"))); // NOI18N
+        newFileBtn.setVerifyInputWhenFocusTarget(false);
+        newFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                newFileBtnActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(newFileBtn);
 
-        jMenuItem2.setText("Abrir");
-        jMenu1.add(jMenuItem2);
+        openFileBtn.setText("Abrir");
+        openFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openFileBtnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(openFileBtn);
 
-        jMenuItem3.setText("Guardar");
-        jMenu1.add(jMenuItem3);
+        saveFileBtn.setText("Guardar");
+        jMenu1.add(saveFileBtn);
 
-        jMenuItem4.setText("Guardar Como...");
-        jMenu1.add(jMenuItem4);
+        saveAsBtn.setText("Guardar Como...");
+        jMenu1.add(saveAsBtn);
 
-        jMenuItem5.setText("Cerrar");
-        jMenu1.add(jMenuItem5);
+        closeFileBtn.setText("Cerrar");
+        jMenu1.add(closeFileBtn);
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Formato");
+
+        jMenuItem8.setText("Fuente");
+        jMenu2.add(jMenuItem8);
+
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Proyecto");
+
+        jMenuItem6.setText("Compilar");
+        jMenu3.add(jMenuItem6);
+
+        jMenuItem7.setText("Compilar y Ejecutar");
+        jMenu3.add(jMenuItem7);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -132,7 +161,7 @@ public class Proyecto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE)
+                        .addComponent(codeTabsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(17, 17, 17))
@@ -142,7 +171,7 @@ public class Proyecto extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane2)
+                    .addComponent(codeTabsPanel)
                     .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,9 +181,56 @@ public class Proyecto extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void newFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileBtnActionPerformed
+        //this.codeTabsPanel.add(new javax.swing.JScrollPane());
+        //scroll
+        //text
+        javax.swing.JScrollPane newScrollPane = new javax.swing.JScrollPane();
+        newScrollPane.setAutoscrolls(true);
+        newScrollPane.setBounds(this.mainScrollPane.getBounds());
+        
+        javax.swing.JTextPane newPane = new javax.swing.JTextPane();
+        newPane.setBounds(this.mainScrollPane.getBounds());
+        
+        newScrollPane.setViewportView(newPane);
+        
+        codeTabsPanel.addTab("New File*", newScrollPane);
+        
+        //newScrollPane.add(newPane);
+        //this.codeTabsPanel.add("New File*", newScrollPane);
+        
+        //newScrollPane.requestFocus();aqui
+        
+        
+    }//GEN-LAST:event_newFileBtnActionPerformed
+
+    private void openFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        Scanner entrada = null;
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.showOpenDialog(fileChooser);
+        try {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();                                        
+            File f = new File(ruta);
+            entrada = new Scanner(f);
+            String texto = "";
+            while (entrada.hasNext()) {
+                texto+=entrada.nextLine()+'\n';
+                //System.out.println(entrada.nextLine());
+            }
+            this.codePane.setText(texto);
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("No se ha seleccionado ningún fichero");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (entrada != null) {
+                entrada.close();
+            }
+        }
+    }//GEN-LAST:event_openFileBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,30 +269,34 @@ public class Proyecto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem closeFileBtn;
+    private javax.swing.JTextPane codePane;
+    private javax.swing.JTabbedPane codeTabsPanel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane jTextPane3;
     private javax.swing.JTextPane jTextPane4;
     private javax.swing.JTextPane jTextPane5;
     private javax.swing.JTextPane jTextPane6;
     private javax.swing.JTextPane jTextPane7;
+    private javax.swing.JScrollPane mainScrollPane;
+    private javax.swing.JMenuItem newFileBtn;
+    private javax.swing.JMenuItem openFileBtn;
+    private javax.swing.JMenuItem saveAsBtn;
+    private javax.swing.JMenuItem saveFileBtn;
     // End of variables declaration//GEN-END:variables
 }
