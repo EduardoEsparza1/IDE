@@ -137,6 +137,11 @@ public class Proyecto extends javax.swing.JFrame {
         jMenu1.add(saveAsBtn);
 
         closeFileBtn.setText("Cerrar");
+        closeFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeFileBtnActionPerformed(evt);
+            }
+        });
         jMenu1.add(closeFileBtn);
 
         jMenuBar1.add(jMenu1);
@@ -254,6 +259,14 @@ public class Proyecto extends javax.swing.JFrame {
         guardarFichero(this.codePane.getText(), archivo);
 
     }//GEN-LAST:event_saveAsBtnActionPerformed
+
+    private void closeFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeFileBtnActionPerformed
+        if(this.codeTabsPanel.getTabCount() > 1) {
+            this.codeTabsPanel.remove(this.codeTabsPanel.getSelectedIndex());
+        } else {
+            System.out.println("Ya es toda wey xD");   
+        }
+    }//GEN-LAST:event_closeFileBtnActionPerformed
 
     /**
      * @param args the command line arguments
