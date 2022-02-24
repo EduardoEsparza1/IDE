@@ -208,18 +208,15 @@ public class Proyecto extends javax.swing.JFrame {
         newScrollPane.setViewportView(newPane);
         
         codeTabsPanel.addTab("New File*", newScrollPane);
-       
         
         //newScrollPane.add(newPane);
         //this.codeTabsPanel.add("New File*", newScrollPane);
         
         //newScrollPane.requestFocus();aqui
         
+        
     }//GEN-LAST:event_newFileBtnActionPerformed
 
-    
-    
-    
     private void openFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileBtnActionPerformed
         // TODO add your handling code here:
         Scanner entrada = null;
