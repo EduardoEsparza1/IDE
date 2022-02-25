@@ -67,6 +67,7 @@ public class Proyecto extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 400, 690));
         setMinimumSize(new java.awt.Dimension(1000, 600));
+        setPreferredSize(new java.awt.Dimension(800, 529));
 
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(47, 800));
 
@@ -249,7 +250,7 @@ public class Proyecto extends javax.swing.JFrame {
             
             this.newFile(nombre, texto);
             
-            System.out.println(texto);
+            //System.out.println(texto);
             
             
         } catch (FileNotFoundException e) {
