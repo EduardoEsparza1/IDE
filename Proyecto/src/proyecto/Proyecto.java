@@ -78,6 +78,11 @@ public class Proyecto extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Errores", jScrollPane7);
 
+        codePane.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                codePaneKeyReleased(evt);
+            }
+        });
         mainScrollPane.setViewportView(codePane);
 
         codeTabsPanel.addTab("Nuevo Archivo*", mainScrollPane);
@@ -208,6 +213,12 @@ public class Proyecto extends javax.swing.JFrame {
         newPane.setBounds(this.mainScrollPane.getBounds());
         newPane.setText(text);
         
+        newPane.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                newPaneKeyReleased(evt);
+            }
+        });
+        
         newScrollPane.setViewportView(newPane);
         
         codeTabsPanel.addTab(name, newScrollPane);
@@ -263,6 +274,10 @@ public class Proyecto extends javax.swing.JFrame {
 
         File archivo = guardar.getSelectedFile();
         
+        
+        this.codeTabsPanel.setTitleAt(this.codeTabsPanel.getSelectedIndex(), archivo.getName());
+        //System.out.println(archivo.getName());
+        
 
         guardarFichero(this.codePane.getText(), archivo);
 
@@ -276,6 +291,29 @@ public class Proyecto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_closeFileBtnActionPerformed
 
+    private void codePaneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codePaneKeyReleased
+        this.analyzeText((javax.swing.JTextPane)evt.getComponent(), ((javax.swing.JTextPane)(evt.getComponent())).getText());
+    }//GEN-LAST:event_codePaneKeyReleased
+
+    private void newPaneKeyReleased(java.awt.event.KeyEvent evt) {                                     
+        this.analyzeText((javax.swing.JTextPane)evt.getComponent(), ((javax.swing.JTextPane)(evt.getComponent())).getText());
+    }   
+    
+    public void analyzeText(javax.swing.JTextPane textPane, String text) {
+        /*Analizar texto*/
+        //Más cosas xD
+        String texto = this.paintText(text);
+        /*Fin Analizar texto :v*/
+        textPane.setText(texto);
+    }
+    
+    public String paintText(String text) {
+        String texto = text;
+        
+        //
+        return texto;
+    }
+    
     /**
      * @param args the command line arguments
      */
