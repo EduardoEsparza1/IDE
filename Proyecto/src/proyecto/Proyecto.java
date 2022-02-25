@@ -86,7 +86,7 @@ public class Proyecto extends javax.swing.JFrame {
         });
         mainScrollPane.setViewportView(codePane);
 
-        codeTabsPanel.addTab("Nuevo Archivo*", mainScrollPane);
+        codeTabsPanel.addTab("Nuevo Archivo", mainScrollPane);
 
         jTextPane4.setEditable(false);
         jScrollPane1.setViewportView(jTextPane4);
@@ -201,7 +201,7 @@ public class Proyecto extends javax.swing.JFrame {
 
     private void newFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileBtnActionPerformed
 
-        this.newFile("Nuevo Archivo*", "");        
+        this.newFile("Nuevo Archivo", "");        
         
     }//GEN-LAST:event_newFileBtnActionPerformed
 

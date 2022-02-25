@@ -201,8 +201,8 @@
         <Container class="javax.swing.JScrollPane" name="mainScrollPane">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Nuevo Archivo*">
-                <Property name="tabTitle" type="java.lang.String" value="Nuevo Archivo*"/>
+              <JTabbedPaneConstraints tabName="Nuevo Archivo">
+                <Property name="tabTitle" type="java.lang.String" value="Nuevo Archivo"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
