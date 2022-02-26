@@ -8,9 +8,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import proyecto.classes.FileAttr;
 
 /**
  *
@@ -21,8 +24,12 @@ public class Proyecto extends javax.swing.JFrame {
     /**
      * Creates new form IDE
      */
+    public ArrayList<FileAttr> fileAttrArray;
+    
     public Proyecto() {
         initComponents();
+        this.fileAttrArray = new ArrayList<FileAttr>();
+        this.fileAttrArray.add(new FileAttr(null, null));
     }
 
     /**
@@ -275,10 +282,7 @@ public class Proyecto extends javax.swing.JFrame {
 
         File archivo = guardar.getSelectedFile();
         
-        
         this.codeTabsPanel.setTitleAt(this.codeTabsPanel.getSelectedIndex(), archivo.getName());
-        //System.out.println(archivo.getName());
-        
 
         guardarFichero(this.codePane.getText(), archivo);
 
@@ -327,6 +331,11 @@ public class Proyecto extends javax.swing.JFrame {
         escribir = new FileWriter(archivo, true);
         escribir.write(cadena);
         escribir.close();
+        
+        FileAttr newFileAttr = new FileAttr(archivo.getName(), archivo.getPath());
+        this.fileAttrArray.add(newFileAttr);
+        
+        System.out.println(this.fileAttrArray.get(0).getFileName());
 
     } catch (FileNotFoundException ex) {
         JOptionPane.showMessageDialog(null, "Error al guardar, ponga nombre al archivo");
