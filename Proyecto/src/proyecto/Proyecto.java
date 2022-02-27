@@ -4,6 +4,7 @@
  */
 package proyecto;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -314,7 +315,7 @@ public class Proyecto extends javax.swing.JFrame {
     
     public String paintText(String text) {
         String texto = text;
-        
+        this.codePane.setForeground(Color.red);
         //
         return texto;
     }
