@@ -4,14 +4,24 @@
  */
 package proyecto.classes;
 
+import java.io.File;
+
 /**
  *
  * @author Ricky
  */
 public class FileAttr {
 
-    String fileName, path;
-    boolean saved;
+    private File file;
+    private boolean saved;
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
 
     public boolean isSaved() {
         return saved;
@@ -21,35 +31,16 @@ public class FileAttr {
         this.saved = saved;
     }
 
-    public FileAttr(String fileName, String path, boolean saved) {
-        this.fileName = fileName;
-        this.path = path;
+    public FileAttr(File file, boolean saved) {
+        this.file = file;
         this.saved = saved;
     }
-    
-    public FileAttr() {
+
+    @Override
+    public String toString() {
+        return "FileAttr{" + "file=" + file.getPath() + ", saved=" + saved + '}';
     }
 
-    public FileAttr(String fileName, String path) {
-        this.fileName = fileName;
-        this.path = path;
-        this.saved = false;
-    }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
     
 }

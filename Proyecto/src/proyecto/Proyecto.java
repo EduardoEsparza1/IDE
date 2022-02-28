@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
@@ -26,11 +26,15 @@ public class Proyecto extends javax.swing.JFrame {
      * Creates new form IDE
      */
     public ArrayList<FileAttr> fileAttrArray;
+    public ArrayList<javax.swing.JTextPane> textPaneArray;
     
     public Proyecto() {
         initComponents();
         this.fileAttrArray = new ArrayList<FileAttr>();
-        this.fileAttrArray.add(new FileAttr(null, null));
+        this.fileAttrArray.add(new FileAttr(null, false));
+        
+        this.textPaneArray = new ArrayList<javax.swing.JTextPane>();
+        this.textPaneArray.add(this.codePane);
     }
 
     /**
@@ -139,6 +143,11 @@ public class Proyecto extends javax.swing.JFrame {
         jMenu1.add(openFileBtn);
 
         saveFileBtn.setText("Guardar");
+        saveFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveFileBtnActionPerformed(evt);
+            }
+        });
         jMenu1.add(saveFileBtn);
 
         saveAsBtn.setText("Guardar Como...");
@@ -209,11 +218,11 @@ public class Proyecto extends javax.swing.JFrame {
 
     private void newFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileBtnActionPerformed
 
-        this.newFile("Nuevo Archivo", "");        
+        this.newFile("Nuevo Archivo", "", null, false);        
         
     }//GEN-LAST:event_newFileBtnActionPerformed
 
-    public void newFile(String name, String text) {
+    public void newFile(String name, String text, File f, boolean saved) {
         javax.swing.JScrollPane newScrollPane = new javax.swing.JScrollPane();
         newScrollPane.setAutoscrolls(true);
         newScrollPane.setBounds(this.mainScrollPane.getBounds());
@@ -229,8 +238,10 @@ public class Proyecto extends javax.swing.JFrame {
         });
         
         newScrollPane.setViewportView(newPane);
-        
         codeTabsPanel.addTab(name, newScrollPane);
+        this.fileAttrArray.add(new FileAttr(f, saved));
+        this.textPaneArray.add(newPane);
+        
         
         //System.out.println(this.codeTabsPanel.getTabCount()-1);
         //this.codeTabsPanel.getTabComponentAt(this.codeTabsPanel.getTabCount()-1).requestFocus();
@@ -256,9 +267,11 @@ public class Proyecto extends javax.swing.JFrame {
                 texto+=entrada.nextLine()+'\n';
             }
             
-            this.newFile(nombre, texto);
+            this.newFile(nombre, texto, f, true);
             
-            //System.out.println(texto);
+            //this.fileAttrArray.add(new FileAttr(f, true));
+            //System.out.println(f.getPath());
+            System.out.println("Size: "+this.fileAttrArray.size());
             
             
         } catch (FileNotFoundException e) {
@@ -276,7 +289,12 @@ public class Proyecto extends javax.swing.JFrame {
 
     private void saveAsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsBtnActionPerformed
         // Guardar Como
+        this.guardarComo();
 
+    }//GEN-LAST:event_saveAsBtnActionPerformed
+
+    private void guardarComo() {
+        
         JFileChooser guardar = new JFileChooser();
         guardar.showSaveDialog(null);
         guardar.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -285,13 +303,17 @@ public class Proyecto extends javax.swing.JFrame {
         
         this.codeTabsPanel.setTitleAt(this.codeTabsPanel.getSelectedIndex(), archivo.getName());
 
-        guardarFichero(this.codePane.getText(), archivo);
-
-    }//GEN-LAST:event_saveAsBtnActionPerformed
-
+        System.out.println(((javax.swing.JTextPane)this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex())));
+        guardarFichero(((javax.swing.JTextPane)this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex())).getText(), archivo);
+        
+    }
+    
     private void closeFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeFileBtnActionPerformed
         if(this.codeTabsPanel.getTabCount() > 1) {
+            System.out.println("Selected index:"+this.codeTabsPanel.getSelectedIndex());
+            this.fileAttrArray.remove(this.codeTabsPanel.getSelectedIndex());
             this.codeTabsPanel.remove(this.codeTabsPanel.getSelectedIndex());
+            this.textPaneArray.remove(this.codeTabsPanel.getSelectedIndex());
         } else {
             System.out.println("Ya es toda wey xD");   
         }
@@ -300,6 +322,21 @@ public class Proyecto extends javax.swing.JFrame {
     private void codePaneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codePaneKeyReleased
         this.analyzeText((javax.swing.JTextPane)evt.getComponent(), ((javax.swing.JTextPane)(evt.getComponent())).getText());
     }//GEN-LAST:event_codePaneKeyReleased
+
+    private void saveFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileBtnActionPerformed
+        // Guardar
+        //System.out.println(((javax.swing.JTextPane)this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex())).getText());
+        
+        if(this.fileAttrArray.get(this.codeTabsPanel.getSelectedIndex()).getFile() == null)
+            this.guardarComo();
+        else
+            this.guardarFichero(
+                    ((javax.swing.JTextPane)this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex())).getText(),
+                    this.fileAttrArray.get(this.codeTabsPanel.getSelectedIndex()).getFile()
+            );
+        
+        System.out.println(((javax.swing.JTextPane)this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex())).getText());
+    }//GEN-LAST:event_saveFileBtnActionPerformed
 
     private void newPaneKeyReleased(java.awt.event.KeyEvent evt) {                                     
         this.analyzeText((javax.swing.JTextPane)evt.getComponent(), ((javax.swing.JTextPane)(evt.getComponent())).getText());
@@ -325,18 +362,25 @@ public class Proyecto extends javax.swing.JFrame {
      */
     
     public void guardarFichero(String cadena, File archivo){
-
-    FileWriter escribir;
+        
+        System.out.println("Cadena: "+cadena);
+        
+        FileWriter escribir;
+        
     try {
-
-        escribir = new FileWriter(archivo, true);
+        /*escribir = new FileWriter(archivo, true);
         escribir.write(cadena);
-        escribir.close();
+        escribir.close();*/
+        PrintWriter pw = new PrintWriter(archivo);
+        pw.write(cadena);
+        pw.close();
         
-        FileAttr newFileAttr = new FileAttr(archivo.getName(), archivo.getPath());
-        this.fileAttrArray.add(newFileAttr);
+        FileAttr newFileAttr = new FileAttr(archivo, true);
+        this.fileAttrArray.set(this.codeTabsPanel.getSelectedIndex(), newFileAttr);
+        //this.fileAttrArray.add(newFileAttr);
         
-        System.out.println(this.fileAttrArray.get(0).getFileName());
+        //System.out.println(this.codeTabsPanel.getSelectedIndex());
+        System.out.println(((FileAttr)this.fileAttrArray.get(this.codeTabsPanel.getSelectedIndex())).toString());
 
     } catch (FileNotFoundException ex) {
         JOptionPane.showMessageDialog(null, "Error al guardar, ponga nombre al archivo");
