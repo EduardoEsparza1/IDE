@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import proyecto.classes.FileAttr;
@@ -123,9 +125,7 @@ public class Proyecto extends javax.swing.JFrame {
         jMenu1.setText("Archivo");
 
         newFileBtn.setText("Nuevo");
-        newFileBtn.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/iconos/pressed/icons8_code_file_48px_p.png"))); // NOI18N
         newFileBtn.setSelected(true);
-        newFileBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/proyecto/iconos/On Layer/icons8_code_file_48px_on.png"))); // NOI18N
         newFileBtn.setVerifyInputWhenFocusTarget(false);
         newFileBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,7 +352,13 @@ public class Proyecto extends javax.swing.JFrame {
     
     public String paintText(String text) {
         String texto = text;
-        this.codePane.setForeground(Color.red);
+        Pattern pat = Pattern.compile("(int|for|while|if|swith|case|else)+");
+        Matcher mat = pat.matcher(texto);
+        if(mat.matches()) {
+           this.codePane.setForeground(Color.red);
+        } else {
+            this.codePane.setForeground(Color.black);
+        }
         //
         return texto;
     }
