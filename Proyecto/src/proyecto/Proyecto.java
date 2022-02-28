@@ -352,13 +352,13 @@ public class Proyecto extends javax.swing.JFrame {
     
     public String paintText(String text) {
         String texto = text;
-        Pattern pat = Pattern.compile("(int|for|while|if|swith|case|else)+");
+        /*Pattern pat = Pattern.compile("(int|for|while|if|swith|case|else)+");
         Matcher mat = pat.matcher(texto);
         if(mat.matches()) {
            this.codePane.setForeground(Color.red);
         } else {
             this.codePane.setForeground(Color.black);
-        }
+        }*/
         //
         return texto;
     }
