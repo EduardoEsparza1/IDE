@@ -12,10 +12,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import proyecto.classes.FileAttr;
 
 /**
@@ -345,22 +347,50 @@ public class Proyecto extends javax.swing.JFrame {
     public void analyzeText(javax.swing.JTextPane textPane, String text) {
         /*Analizar texto*/
         //Más cosas xD
-        String texto = this.paintText(text);
+        /*String texto = */this.paintText(text, textPane);
+        
+        //textPane.setText("");
         /*Fin Analizar texto :v*/
-        textPane.setText(texto);
+        //textPane.setText(texto);
     }
     
-    public String paintText(String text) {
-        String texto = text;
-        /*Pattern pat = Pattern.compile("(int|for|while|if|swith|case|else)+");
-        Matcher mat = pat.matcher(texto);
-        if(mat.matches()) {
-           this.codePane.setForeground(Color.red);
-        } else {
-            this.codePane.setForeground(Color.black);
-        }*/
-        //
-        return texto;
+    public void paintText(String text, javax.swing.JTextPane textPane) {
+        
+        String texto = "", palabra = "";
+        StyledDocument doc = textPane.getStyledDocument();
+        Style style = textPane.addStyle("I'm a Style", null);
+        
+        Pattern pat = Pattern.compile("(int|for|while|if|swith|case|else)+");
+        
+        char[] textLeter = text.toCharArray();
+        
+        for(char letra : textLeter) {
+            if(letra != ' ') {
+                palabra += letra;
+            } else {
+                if(pat.matcher(palabra).matches()) {
+                    StyleConstants.setForeground(style, Color.blue);
+                    try{
+                        doc.insertString(doc.getLength(), palabra, style);
+                        StyleConstants.setForeground(style, Color.black);
+                        doc.insertString(doc.getLength(), String.valueOf(letra), style);
+                        
+                    } catch(Exception e) {}
+                    //texto += palabra + letra;
+                } else {
+                    StyleConstants.setForeground(style, Color.black);
+                    try{
+                        doc.insertString(doc.getLength(), palabra+letra, style);
+                    } catch(Exception e) {
+                        
+                    }
+                }
+                palabra = "";
+                
+            }
+        }
+        textPane.setStyledDocument(doc);
+        
     }
     
     /**
@@ -373,27 +403,27 @@ public class Proyecto extends javax.swing.JFrame {
         
         FileWriter escribir;
         
-    try {
-        /*escribir = new FileWriter(archivo, true);
-        escribir.write(cadena);
-        escribir.close();*/
-        PrintWriter pw = new PrintWriter(archivo);
-        pw.write(cadena);
-        pw.close();
-        
-        FileAttr newFileAttr = new FileAttr(archivo, true);
-        this.fileAttrArray.set(this.codeTabsPanel.getSelectedIndex(), newFileAttr);
-        //this.fileAttrArray.add(newFileAttr);
-        
-        //System.out.println(this.codeTabsPanel.getSelectedIndex());
-        System.out.println(((FileAttr)this.fileAttrArray.get(this.codeTabsPanel.getSelectedIndex())).toString());
+        try {
+            /*escribir = new FileWriter(archivo, true);
+            escribir.write(cadena);
+            escribir.close();*/
+            PrintWriter pw = new PrintWriter(archivo);
+            pw.write(cadena);
+            pw.close();
 
-    } catch (FileNotFoundException ex) {
-        JOptionPane.showMessageDialog(null, "Error al guardar, ponga nombre al archivo");
-    } catch (IOException ex) {
-        JOptionPane.showMessageDialog(null, "Error al guardar, en la salida");
+            FileAttr newFileAttr = new FileAttr(archivo, true);
+            this.fileAttrArray.set(this.codeTabsPanel.getSelectedIndex(), newFileAttr);
+            //this.fileAttrArray.add(newFileAttr);
+
+            //System.out.println(this.codeTabsPanel.getSelectedIndex());
+            System.out.println(((FileAttr)this.fileAttrArray.get(this.codeTabsPanel.getSelectedIndex())).toString());
+
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar, ponga nombre al archivo");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar, en la salida");
+        }
     }
-}
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
