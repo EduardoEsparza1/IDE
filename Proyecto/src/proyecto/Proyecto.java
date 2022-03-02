@@ -15,8 +15,13 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import proyecto.classes.FileAttr;
 
@@ -345,52 +350,83 @@ public class Proyecto extends javax.swing.JFrame {
     }   
     
     public void analyzeText(javax.swing.JTextPane textPane, String text) {
-        /*Analizar texto*/
-        //Más cosas xD
-        /*String texto = */this.paintText(text, textPane);
-        
-        //textPane.setText("");
-        /*Fin Analizar texto :v*/
-        //textPane.setText(texto);
+        this.paintText();
     }
     
-    public void paintText(String text, javax.swing.JTextPane textPane) {
-        
-        String texto = "", palabra = "";
-        StyledDocument doc = textPane.getStyledDocument();
-        Style style = textPane.addStyle("I'm a Style", null);
-        
-        Pattern pat = Pattern.compile("(int|for|while|if|swith|case|else)+");
-        
-        char[] textLeter = text.toCharArray();
-        
-        for(char letra : textLeter) {
-            if(letra != ' ') {
-                palabra += letra;
-            } else {
-                if(pat.matcher(palabra).matches()) {
-                    StyleConstants.setForeground(style, Color.blue);
-                    try{
-                        doc.insertString(doc.getLength(), palabra, style);
-                        StyleConstants.setForeground(style, Color.black);
-                        doc.insertString(doc.getLength(), String.valueOf(letra), style);
-                        
-                    } catch(Exception e) {}
-                    //texto += palabra + letra;
-                } else {
-                    StyleConstants.setForeground(style, Color.black);
-                    try{
-                        doc.insertString(doc.getLength(), palabra+letra, style);
-                    } catch(Exception e) {
-                        
-                    }
-                }
-                palabra = "";
-                
+    //METODO PARA ENCONTRAR LAS ULTIMAS CADENAS DE JTEXTPANE
+    private int findLastNonWordChar(String text, int index){
+        while(--index >= 0){
+            if(String.valueOf(text.charAt(index)).matches("\\W")){
+                break;
             }
         }
-        textPane.setStyledDocument(doc);
+        return index;
+    }
+    
+      //METODO PARA ENCONTRAR LAS PRIMERAS CADENAS DE JTEXTPANE
+    private int findFirstNonWordChar(String text, int index){
+        while(index < text.length()){
+            if(String.valueOf(text.charAt(index)).matches("\\W")){
+                break;
+            }
+            index++;
+        }
+        return index;
+    }
+    
+    public void paintText() { 
+        final StyleContext cont = StyleContext.getDefaultStyleContext();
         
+        //COLORES
+        final AttributeSet attred = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(255,0,0));
+        //final AttributeSet attgreen = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(0,255,0));
+        final AttributeSet attblue = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(0,0,255));        
+        final AttributeSet attblack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(0,0,0));
+        
+        //STYLE
+        DefaultStyledDocument doc = new DefaultStyledDocument(){
+            @Override
+            public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
+                super.insertString(offset, str, a);
+                String text = getText(0,getLength());
+                int before = findLastNonWordChar(text,offset);
+                if(before < 0){
+                    before = 0;
+                }
+                int after = findFirstNonWordChar(text,offset+str.length());
+                int wordL = before;
+                int wordR = before;
+                
+                while(wordR <= after){
+                    if(wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")){
+                        if(text.substring(wordL, wordR).matches("(\\W)*(if|for|while|swith|case|else)(\\W)*")){
+                            setCharacterAttributes(wordL, wordR - wordL,attblue,false);
+                        }
+                        else if(text.substring(wordL,wordR).matches("(\\W)*(int|double|boolean|String)(\\W)*")){
+                            setCharacterAttributes(wordL, wordR - wordL,attred,false);
+                        }else{
+                            setCharacterAttributes(wordL, wordR - wordL,attblack,false);
+                        }
+                        wordL = wordR;
+                    }
+                    wordR++;
+                }
+            }
+            public void remove(int offs, int len) throws BadLocationException {
+                super.remove(offs, len);
+                
+                String text = getText(0,getLength());
+                int before = findLastNonWordChar(text,offs);
+                if(before < 0 ){
+                    before = 0;
+                }
+            }
+        };
+        
+        JTextPane txt = new JTextPane(doc);
+        String temp = this.codePane.getText();
+        this.codePane.setStyledDocument(txt.getStyledDocument());
+        this.codePane.setText(temp);
     }
     
     /**
