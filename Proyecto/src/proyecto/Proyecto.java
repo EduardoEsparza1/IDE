@@ -350,7 +350,8 @@ public class Proyecto extends javax.swing.JFrame {
     }   
     
     public void analyzeText(javax.swing.JTextPane textPane, String text) {
-        this.paintText();
+        //mas cosas
+        this.paintText(textPane);
     }
     
     //METODO PARA ENCONTRAR LAS ULTIMAS CADENAS DE JTEXTPANE
@@ -374,7 +375,7 @@ public class Proyecto extends javax.swing.JFrame {
         return index;
     }
     
-    public void paintText() { 
+    public void paintText(javax.swing.JTextPane textPane) { 
         final StyleContext cont = StyleContext.getDefaultStyleContext();
         
         //COLORES
@@ -399,7 +400,7 @@ public class Proyecto extends javax.swing.JFrame {
                 
                 while(wordR <= after){
                     if(wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")){
-                        if(text.substring(wordL, wordR).matches("(\\W)*(if|for|while|swith|case|else)(\\W)*")){
+                        if(text.substring(wordL, wordR).matches("(\\W)*(if|for|while|switch|case|else)(\\W)*")){
                             setCharacterAttributes(wordL, wordR - wordL,attblue,false);
                         }
                         else if(text.substring(wordL,wordR).matches("(\\W)*(int|double|boolean|String)(\\W)*")){
@@ -424,9 +425,9 @@ public class Proyecto extends javax.swing.JFrame {
         };
         
         JTextPane txt = new JTextPane(doc);
-        String temp = this.codePane.getText();
-        this.codePane.setStyledDocument(txt.getStyledDocument());
-        this.codePane.setText(temp);
+        String temp = textPane.getText();
+        textPane.setStyledDocument(txt.getStyledDocument());
+        textPane.setText(temp);
     }
     
     /**
