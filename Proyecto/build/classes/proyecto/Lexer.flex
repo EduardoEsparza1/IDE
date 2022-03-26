@@ -17,7 +17,7 @@ switch |
 double |
 while {lexeme=yytext(); return Reservadas;}
 {espacio} {/*Ignore*/}
-"//".* {/*Ignore*/}
+"//".* { return ComentarioLinea; }
 "=" {return Igual;}
 "+" {return Suma;}
 "-" {return Resta;}
