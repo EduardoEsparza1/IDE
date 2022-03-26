@@ -5,13 +5,18 @@
 package proyecto;
 
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -23,7 +28,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
-import proyecto.classes.FileAttr;
+import proyecto.classes.*;
 
 /**
  *
@@ -65,7 +70,7 @@ public class Proyecto extends javax.swing.JFrame {
         codePane = new javax.swing.JTextPane();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane4 = new javax.swing.JTextPane();
+        lexico = new javax.swing.JTextPane();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextPane5 = new javax.swing.JTextPane();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -84,6 +89,7 @@ public class Proyecto extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 400, 690));
@@ -109,8 +115,8 @@ public class Proyecto extends javax.swing.JFrame {
 
         codeTabsPanel.addTab("Nuevo Archivo", mainScrollPane);
 
-        jTextPane4.setEditable(false);
-        jScrollPane1.setViewportView(jTextPane4);
+        lexico.setEditable(false);
+        jScrollPane1.setViewportView(lexico);
 
         jTabbedPane3.addTab("Léxico", jScrollPane1);
 
@@ -189,6 +195,14 @@ public class Proyecto extends javax.swing.JFrame {
 
         jMenuItem7.setText("Compilar y Ejecutar");
         jMenu3.add(jMenuItem7);
+
+        jMenuItem9.setText("Analizar");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem9);
 
         jMenuBar1.add(jMenu3);
 
@@ -345,6 +359,17 @@ public class Proyecto extends javax.swing.JFrame {
         System.out.println(((javax.swing.JTextPane)this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex())).getText());
     }//GEN-LAST:event_saveFileBtnActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        int index = this.codeTabsPanel.getSelectedIndex();
+        if(this.fileAttrArray.get(index).getFile() == null) {
+            this.guardarComo();
+        } else {
+            this.guardarFichero(this.textPaneArray.get(index).getText(), this.fileAttrArray.get(index).getFile());
+        }
+        
+        this.lexer(this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex()));
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     private void newPaneKeyReleased(java.awt.event.KeyEvent evt) {                                     
         this.analyzeText((javax.swing.JTextPane)evt.getComponent(), ((javax.swing.JTextPane)(evt.getComponent())).getText());
     }   
@@ -462,6 +487,50 @@ public class Proyecto extends javax.swing.JFrame {
         }
     }
     
+    private void lexer(javax.swing.JTextPane textPane) {
+        int index = this.codeTabsPanel.getSelectedIndex();
+        File archivo = new File(this.fileAttrArray.get(index).getFile().getPath());
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(archivo);
+            escribir.print(textPane.getText());
+            escribir.close();
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            Reader lector = new BufferedReader(new FileReader(archivo));
+            Lexer lexer = new Lexer(lector);
+            String resultado = "";
+            
+            while (true) {
+                Tokens tokens = lexer.yylex();
+                if (tokens == null) {
+                    resultado += "FIN";
+                    this.lexico.setText(resultado);
+                    //txtResultado.setText(resultado);
+                    return;
+                }
+                switch (tokens) {
+                    case ERROR:
+                        resultado += "Simbolo no definido\n";
+                        break;
+                    case Identificador: case Numero: case Reservadas:
+                        resultado += lexer.lexeme + ": Es un " + tokens + "\n";
+                        break;
+                    default:
+                        resultado += "Token: " + tokens + "\n";
+                        break;
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            //Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -506,6 +575,7 @@ public class Proyecto extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -516,10 +586,10 @@ public class Proyecto extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane jTextPane3;
-    private javax.swing.JTextPane jTextPane4;
     private javax.swing.JTextPane jTextPane5;
     private javax.swing.JTextPane jTextPane6;
     private javax.swing.JTextPane jTextPane7;
+    private javax.swing.JTextPane lexico;
     private javax.swing.JScrollPane mainScrollPane;
     private javax.swing.JMenuItem newFileBtn;
     private javax.swing.JMenuItem openFileBtn;
