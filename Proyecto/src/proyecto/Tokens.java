@@ -18,5 +18,8 @@ public enum Tokens {
     Identificador,
     Numero,
     ERROR,
-    ComentarioLinea
+    ComentarioLinea,
+    finSentencia,
+    miltiComentario,
+    Flotante
 }
