@@ -1,14 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto;
+import java_cup.runtime.Symbol;
 
-/**
- *
- * @author AUX SISTEMAS
- */
-public enum Tokens {
+parser code
+{:
+    private Symbol s;
+
+    public void syntax_error(Symbol s) {
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+    }
+:};
+
+terminal 
     If,
     Else,
     Fi,
@@ -23,7 +29,6 @@ public enum Tokens {
     Not,
     And,
     Or,
-    Reservadas,
     Igual,
     Suma,
     Resta,
@@ -31,13 +36,8 @@ public enum Tokens {
     Division,
     Identificador,
     Numero,
-    ERROR,
-    Linea,
-    ComentarioLinea,
-    FinSentencia,
-    miltiComentario,
     Flotante,
-    punto,
+    Punto,
     Potencia,
     Menor,
     MenorIgual,
@@ -50,4 +50,14 @@ public enum Tokens {
     Parentesis_c,
     Llave_a,
     Llave_c
-}
+;
+
+non terminal
+
+
+
+tipo
+;
+
+
+tipo ::= int | float | bool
