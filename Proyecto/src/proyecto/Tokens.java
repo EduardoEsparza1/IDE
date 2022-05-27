@@ -49,5 +49,6 @@ public enum Tokens {
     Parentesis_a,
     Parentesis_c,
     Llave_a,
-    Llave_c
+    Llave_c,
+    Program
 }
