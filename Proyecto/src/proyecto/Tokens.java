@@ -1,54 +1,62 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package proyecto;
 
 /**
  *
- * @author AUX SISTEMAS
+ * @author Charly Ponce
  */
 public enum Tokens {
+    Linea,
+    Comillas,
+    T_dato,
+    Cadena,
     If,
     Else,
-    Fi,
     Do,
-    Until,
     While,
-    Read,
-    Write,
-    Float,
-    Int,
-    Bool,
-    Not,
-    And,
-    Or,
-    Reservadas,
+    For,
     Igual,
     Suma,
     Resta,
     Multiplicacion,
     Division,
-    Identificador,
-    Numero,
-    ERROR,
-    Linea,
-    ComentarioLinea,
-    FinSentencia,
-    miltiComentario,
-    Flotante,
-    punto,
-    Potencia,
-    Menor,
-    MenorIgual,
-    Mayor,
-    MayorIgual,
-    IgualComp,
-    Diferente,
-    Coma,
+    Op_logico,
+    Op_incremento,
+    Op_relacional,
+    Op_atribucion,
+    Op_booleano,
     Parentesis_a,
     Parentesis_c,
     Llave_a,
     Llave_c,
-    Program
+    Corchete_a,
+    Corchete_c,
+    Main,
+    P_coma,
+    Identificador,
+    Numero,
+    ERROR,
+    Read,
+    Program,
+    Bool,
+    MenorIgual,
+    FinSentencia,
+    Not,
+    IgualComp,
+    Mayor,
+    multiComentario,
+    Menor,
+    And,
+    Write,
+    MayorIgual,
+    ComentarioLinea,
+    Potencia,
+    Diferente,
+    Or,
+    Fi,
+    Float
 }

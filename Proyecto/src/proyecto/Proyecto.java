@@ -13,11 +13,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java_cup.runtime.Symbol;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -72,7 +74,7 @@ public class Proyecto extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         lexico = new javax.swing.JTextPane();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTextPane5 = new javax.swing.JTextPane();
+        sintactico = new javax.swing.JTextPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPane3 = new javax.swing.JTextPane();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -120,8 +122,8 @@ public class Proyecto extends javax.swing.JFrame {
 
         jTabbedPane3.addTab("Léxico", jScrollPane1);
 
-        jTextPane5.setEditable(false);
-        jScrollPane5.setViewportView(jTextPane5);
+        sintactico.setEditable(false);
+        jScrollPane5.setViewportView(sintactico);
 
         jTabbedPane3.addTab("Sintáctico", jScrollPane5);
 
@@ -368,6 +370,11 @@ public class Proyecto extends javax.swing.JFrame {
         }
         
         this.lexer(this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex()));
+        try {
+            this.Sin(this.textPaneArray.get(this.codeTabsPanel.getSelectedIndex()));
+        } catch (Exception ex) {
+            Logger.getLogger(Proyecto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void newPaneKeyReleased(java.awt.event.KeyEvent evt) {                                     
@@ -500,9 +507,10 @@ public class Proyecto extends javax.swing.JFrame {
         }
         
         try {
+            int cont = 1;
             Reader lector = new BufferedReader(new FileReader(archivo));
             Lexer lexer = new Lexer(lector);
-            String resultado = "";
+            String resultado = "LINEA"+cont+"\n";
             
             while (true) {
                 Tokens tokens = lexer.yylex();
@@ -512,12 +520,16 @@ public class Proyecto extends javax.swing.JFrame {
                     //txtResultado.setText(resultado);
                     return;
                 }
+                
                 switch (tokens) {
+                    case Linea: 
+                         cont++;
+                         resultado += "LINEA "+ cont + "\n"; break;
                     case ERROR:
                         resultado += "Simbolo no definido\n";
                         break;
-                    case Identificador: case Numero: case Reservadas:
-                        resultado += lexer.lexeme + ": Es un " + tokens + "\n";
+                    case Identificador: case Numero:
+                        resultado += lexer.lexeme + ": " + tokens + "\n";
                         break;
                     default:
                         resultado += "Token: " + tokens + "\n";
@@ -530,6 +542,22 @@ public class Proyecto extends javax.swing.JFrame {
             //Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    //cup :v
+    private void Sin(javax.swing.JTextPane textPane) throws Exception {
+        String ST = textPane.getText();
+        Sintax s = new Sintax(new proyecto.LexerCup(new StringReader(ST)));
+        //this.lexico.setText(resultado);
+        try{  
+          s.parse();
+          this.sintactico.setText("Analisis realizado correctamente");
+          this.sintactico.setForeground(new Color(25,111,61));
+        }catch (Exception ex){
+          Symbol sym = s.getS();
+          this.sintactico.setText("Error de sintaxis: "+ (sym.right+1) +", Texto: "+sym.value + "\"");
+          this.sintactico.setForeground(Color.red);
+        }
+      }
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -586,7 +614,6 @@ public class Proyecto extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane jTextPane3;
-    private javax.swing.JTextPane jTextPane5;
     private javax.swing.JTextPane jTextPane6;
     private javax.swing.JTextPane jTextPane7;
     private javax.swing.JTextPane lexico;
@@ -595,5 +622,6 @@ public class Proyecto extends javax.swing.JFrame {
     private javax.swing.JMenuItem openFileBtn;
     private javax.swing.JMenuItem saveAsBtn;
     private javax.swing.JMenuItem saveFileBtn;
+    private javax.swing.JTextPane sintactico;
     // End of variables declaration//GEN-END:variables
 }

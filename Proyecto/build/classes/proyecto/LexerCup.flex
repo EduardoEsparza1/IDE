@@ -25,7 +25,7 @@ espacio=[ ,\t,\r,\n]+
 (else) {return new Symbol(sym.Else, yychar, yyline, yytext());}
 (fi) {return new Symbol(sym.Fi, yychar, yyline, yytext());}
 (do) {return new Symbol(sym.Do, yychar, yyline, yytext());}
-(until) {return new Symbol(sym.Until, yychar, yyline, yytext());}
+
 (while) {return new Symbol(sym.While, yychar, yyline, yytext());}
 (read) {return new Symbol(sym.Read, yychar, yyline, yytext());}
 (write) {return new Symbol(sym.Write, yychar, yyline, yytext());}
@@ -37,7 +37,7 @@ espacio=[ ,\t,\r,\n]+
 (or) {return new Symbol(sym.Or, yychar, yyline, yytext());}
 
 {espacio} {/*Ignore*/}
-("//".*) { return ComentarioLinea; }
+("//".*) {return new Symbol(sym.ComentarioLinea, yychar, yyline, yytext());}
 ("=") {return new Symbol(sym.Igual, yychar, yyline, yytext());}
 ("+") {return new Symbol(sym.Suma, yychar, yyline, yytext());}
 ("-") {return new Symbol(sym.Resta, yychar, yyline, yytext());}
@@ -56,7 +56,7 @@ espacio=[ ,\t,\r,\n]+
 (")") {return new Symbol(sym.Parentesis_c, yychar, yyline, yytext());}
 ("{") {return new Symbol(sym.Llave_a, yychar, yyline, yytext());}
 ("}") {return new Symbol(sym.Llave_c, yychar, yyline, yytext());}
-("/*[^*/]**/") {return new Symbol(sym.miltiComentario, yychar, yyline, yytext());}
+("/*[^*/]**/") {return new Symbol(sym.multiComentario, yychar, yyline, yytext());}
 
 {L}({L}|{D})* {return new Symbol(sym.Identificador, yychar, yyline, yytext());}
 ("(-"{D}+")")|{D}+ {return new Symbol(sym.Numero, yychar, yyline, yytext());}
