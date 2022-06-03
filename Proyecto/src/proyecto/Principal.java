@@ -17,10 +17,15 @@ public class Principal {
         //String ruta2 = "E:/LALO/UNIVERSIDAD/8vo Semestre/Compiladores I/Compilador/IDE/Proyecto/src/proyecto/LexerCup.flex";
         //String[] rutaS = {"-parser", "Sintax", "E:/LALO/UNIVERSIDAD/8vo Semestre/Compiladores I/Compilador/IDE/Proyecto/src/proyecto/Sintax.cup"};
         
-        //C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores
-        String ruta1 = "C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Lexer.flex";
+        //Rutas lap Lalo
+        /*String ruta1 = "C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Lexer.flex";
         String ruta2 = "C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/LexerCup.flex";
-        String[] rutaS = {"-parser", "Sintax", "C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.cup"};
+        String[] rutaS = {"-parser", "Sintax", "C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.cup"};*/
+        
+        //Rutas Work Ricky
+        String ruta1 = "D:/Apps/IDE/Proyecto/src/proyecto/Lexer.flex";
+        String ruta2 = "D:/Apps/IDE/Proyecto/src/proyecto/LexerCup.flex";
+        String[] rutaS = {"-parser", "Sintax", "D:/Apps/IDE/Proyecto/src/proyecto/Sintax.cup"};
         generar(ruta1, ruta2, rutaS);
     }
     public static void generar(String ruta1, String ruta2, String[] rutaS) throws IOException, Exception{
@@ -31,25 +36,39 @@ public class Principal {
         archivo = new File(ruta2);
         JFlex.Main.generate(archivo);
         java_cup.Main.main(rutaS);
-        
-        Path rutaSym = Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/sym.java");
+        //Lalo
+        //Path rutaSym = Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/sym.java");
+        //Rocky
+        Path rutaSym = Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/sym.java");
         if(Files.exists(rutaSym)) {
             Files.delete(rutaSym);
         }
-        
-        Path rutaSin = Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.java");
+        //Lalo
+        //Path rutaSin = Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.java");
+        //Rocky
+        Path rutaSin = Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/Sintax.java");
         if(Files.exists(rutaSin)) {
             Files.delete(rutaSin);
         }
-        
-        Files.move(
+        //Lalo
+        /*Files.move(
                 Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/sym.java"),
                 Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/sym.java")
-        );
-        
+        );*/
+        //Rocky
         Files.move(
+                Paths.get("D:/Apps/IDE/Proyecto/sym.java"),
+                Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/sym.java")
+        );
+        //Lalo
+        /*Files.move(
                 Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/Sintax.java"),
                 Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.java")
+        );*/
+        //Rocky
+        Files.move(
+                Paths.get("D:/Apps/IDE/Proyecto/Sintax.java"),
+                Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/Sintax.java")
         );
     }
 }
