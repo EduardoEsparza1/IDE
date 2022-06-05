@@ -58,5 +58,7 @@ public enum Tokens {
     Diferente,
     Or,
     Fi,
-    Float
+    Float,
+    Coma,
+    Until
 }

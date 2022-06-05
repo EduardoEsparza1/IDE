@@ -23,9 +23,14 @@ public class Principal {
         String[] rutaS = {"-parser", "Sintax", "C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.cup"};*/
         
         //Rutas Work Ricky
-        String ruta1 = "D:/Apps/IDE/Proyecto/src/proyecto/Lexer.flex";
+        /*String ruta1 = "D:/Apps/IDE/Proyecto/src/proyecto/Lexer.flex";
         String ruta2 = "D:/Apps/IDE/Proyecto/src/proyecto/LexerCup.flex";
-        String[] rutaS = {"-parser", "Sintax", "D:/Apps/IDE/Proyecto/src/proyecto/Sintax.cup"};
+        String[] rutaS = {"-parser", "Sintax", "D:/Apps/IDE/Proyecto/src/proyecto/Sintax.cup"};*/
+        
+        //Rutas  Ricky
+        String ruta1 = "D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/Lexer.flex";
+        String ruta2 = "D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/LexerCup.flex";
+        String[] rutaS = {"-parser", "Sintax", "D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/Sintax.cup"};
         generar(ruta1, ruta2, rutaS);
     }
     public static void generar(String ruta1, String ruta2, String[] rutaS) throws IOException, Exception{
@@ -39,14 +44,19 @@ public class Principal {
         //Lalo
         //Path rutaSym = Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/sym.java");
         //Rocky
-        Path rutaSym = Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/sym.java");
+        //Path rutaSym = Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/sym.java");
+        //Rocky work
+        //Path rutaSym = Paths.get("D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/sym.java");
+        Path rutaSym = Paths.get("D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/sym.java");
         if(Files.exists(rutaSym)) {
             Files.delete(rutaSym);
         }
         //Lalo
         //Path rutaSin = Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.java");
         //Rocky
-        Path rutaSin = Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/Sintax.java");
+        //Path rutaSin = Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/Sintax.java");
+        //Ricky
+        Path rutaSin = Paths.get("D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/Sintax.java");
         if(Files.exists(rutaSin)) {
             Files.delete(rutaSin);
         }
@@ -56,9 +66,14 @@ public class Principal {
                 Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/sym.java")
         );*/
         //Rocky
-        Files.move(
+        /*Files.move(
                 Paths.get("D:/Apps/IDE/Proyecto/sym.java"),
                 Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/sym.java")
+        );*/
+        //Ricky
+        Files.move(
+                Paths.get("D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/sym.java"),
+                Paths.get("D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/sym.java")
         );
         //Lalo
         /*Files.move(
@@ -66,9 +81,15 @@ public class Principal {
                 Paths.get("C:/Users/eduar/OneDrive/Documentos Universidad/Compiladores/IDE/Proyecto/src/proyecto/Sintax.java")
         );*/
         //Rocky
-        Files.move(
+        /*Files.move(
                 Paths.get("D:/Apps/IDE/Proyecto/Sintax.java"),
                 Paths.get("D:/Apps/IDE/Proyecto/src/proyecto/Sintax.java")
+        );*/
+        //Ricky
+        Files.move(
+                Paths.get("D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/Sintax.java"),
+                Paths.get("D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto/src/proyecto/Sintax.java")
         );
+        ////D:/Ricky/UAA/ISC/8°/Compiladores I/IDE/Proyecto
     }
 }

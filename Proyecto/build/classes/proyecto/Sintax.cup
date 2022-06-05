@@ -20,10 +20,46 @@ terminal Linea, Comillas, T_dato, Int, Cadena, If, Else, Do, While, For,
     Op_atribucion, Op_incremento, Op_booleano, Parentesis_a, Parentesis_c,
     Llave_a, Llave_c, Corchete_a, Corchete_c, Main, P_coma, Identificador,
     Numero, ERROR, Read, Program, Bool, MenorIgual, FinSentencia, Not, IgualComp,
-    Mayor, multiComentario, Menor, And, Write, MayorIgual, ComentarioLinea, Potencia, Diferente,
-    Or, Fi, Float;
-non terminal INICIO;
+    Mayor, multiComentario, Menor, And, Write, MayorIgual, ComentarioLinea,
+    Potencia, Diferente, Coma, Or, Fi, Float, tipo, Then, Until, True, False,
+    relOp, sumaOp, multOp;
+
+non terminal INICIO, listaDeclaracion, listaSentencias, declaracion, listaId,
+    sentencia, seleccion, iteracion, repeticion, sentRead, sentWrite, bloque,
+    asignacion, bExpresion, b_term, not_factor, b_factor, relacion, expresion,
+    termino, signoFactor, factor;
 
 start with INICIO;
 
-INICIO ::= Program Llave_a Llave_c;
+INICIO ::= Program Llave_a listaDeclaracion listaSentencias Llave_c;
+listaDeclaracion ::= { declaracion };
+declaracion ::= tipo listaId P_coma;
+tipo ::= Int | Float | Bool;
+listaId ::= Identificador { Coma Identificador };
+
+listaSentencias ::= { sentencia };
+sentencia ::= seleccion | iteracion | repeticion | sentRead | sentWrite
+             | bloque | asignacion;
+
+seleccion ::= If Parentesis_a bExpresion Parentesis_c Then bloque Else bloque Fi
+            | If Parentesis_a bExpresion Parentesis_c Then bloque Fi;
+iteracion ::= While Parentesis_a bExpresion Parentesis_c bloque;
+repeticion ::= Do bloque Until Parentesis_a bExpresion Parentesis_c P_coma;
+sentRead ::= Read Identificador P_coma;
+sentWrite ::= Write bExpresion P_coma;
+bloque ::= Llave_a listaSentencias Llave_c;
+asignacion ::= Identificador Igual bExpresion P_coma;
+
+bExpresion ::= b_term { Or b_term };
+b_term ::= not_factor { And not_factor };
+not_factor ::= Not b_factor | b_factor;
+b_factor ::= (True | False) | relacion;
+
+relacion ::= expresion | expresion relOp expresion;
+relOp ::= MenorIgual | Menor | Mayor | MayorIgual | IgualComp | Diferente;
+expresion ::= termino { sumaOp termino };
+sumaOp ::= Suma | Resta;
+termino ::= signoFactor { multOp signoFactor };
+multOp ::= Multiplicacion | Division;
+signoFactor ::= sumaOp factor | factor;
+factor ::= Parentesis_a bExpresion Parentesis_c | Numero | Identificador;

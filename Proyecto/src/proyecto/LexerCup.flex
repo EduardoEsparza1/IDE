@@ -35,6 +35,7 @@ espacio=[ ,\t,\r,\n]+
 (not) {return new Symbol(sym.Not, yychar, yyline, yytext());}
 (and) {return new Symbol(sym.And, yychar, yyline, yytext());}
 (or) {return new Symbol(sym.Or, yychar, yyline, yytext());}
+(until) {return new Symbol(sym.Until, yychar, yyline, yytext());}
 
 {espacio} {/*Ignore*/}
 ("//".*) {return new Symbol(sym.ComentarioLinea, yychar, yyline, yytext());}

@@ -554,7 +554,7 @@ public class Proyecto extends javax.swing.JFrame {
           this.sintactico.setForeground(new Color(25,111,61));
         }catch (Exception ex){
           Symbol sym = s.getS();
-          this.sintactico.setText("Error de sintaxis. Linea: " + (sym.right+1) +", Texto: \""+sym.toString() + "\"");
+          this.sintactico.setText("Error de sintaxis. Linea: " + (sym.right+1) +", Texto: \""+sym.value + "\"");
           this.sintactico.setForeground(Color.red);
         }
       }
